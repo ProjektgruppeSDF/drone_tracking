@@ -15,3 +15,12 @@
 
 
 
+
+
+
+Today:
+
+- Personenerkennung mit Kamera
+- mit Kameraapi für Steuerung auseinandersetzen
+- Unklarheiten bezüglich Kalman-Filter abklären
+- erste einfache Schnittstelle zwischen Detektion und Tracking
