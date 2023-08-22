@@ -3,9 +3,9 @@ import cv2
 import os
 import math 
 
-model = YOLO("yolo-Weights/yolov8n.pt")
+model = YOLO("resources/yolo-Weights/yolov8n.pt")
 
-source = "/home/projekt/Dokumente/PG/BeispielVideoWebcam.mp4"
+source = "resources/BeispielVideoWebcam.mp4"
 cap = cv2.VideoCapture(source)
 
 # object classes
