@@ -2,6 +2,7 @@ from ultralytics import YOLO
 
 
 model_weights = "resources/yolo-Weights/yolov8n.pt"
+model = YOLO(model_weights)
 source = "resources/BeispielVideoWebcam.mp4"
 
 
