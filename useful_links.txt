@@ -13,3 +13,7 @@ https://dipankarmedh1.medium.com/real-time-object-detection-with-yolo-and-webcam
 OpenCV
 
 https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/
+
+Axis API
+
+https://www.axis.com/vapix-library/subjects/t10175981/section/t10036011/display
