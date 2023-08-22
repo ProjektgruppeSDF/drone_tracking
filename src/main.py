@@ -1,4 +1,3 @@
-from detection.detection_config import source
 from detection.detection import Detector
 from detection.display_detection import display_image_with_detection
 from tracking.tracker import Tracker
