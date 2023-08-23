@@ -9,6 +9,7 @@ class Detector:
 
     def __init__(self) -> None:
         self.model = YOLO(model_weights)
+    
 
 # TODO: überlegen, wie mit mehreren Boxes der selben Klasse umzugehen ist. Am besten nur die mit höchster confidence verwenden
     def detect(self, img):
@@ -24,8 +25,15 @@ class Detector:
                 cls = int(box.cls[0])
                 class_label = classNames[cls]
                 detectionBox = DetectionBox(x1, y1, x2, y2, confidence, class_label)
-                detection_boxes.append(detectionBox)
-
+                if(detectionBox.class_label == "person"):
+                    detection_boxes.append(detectionBox)
+            if(len(detection_boxes)!= 0):
+                result = detection_boxes[0]
+                for box in detection_boxes:
+                    if(box.confidence > result.confidence):
+                        result = box
+                detection_boxes.clear()
+                detection_boxes.append(result)
         return detection_boxes
                 
 

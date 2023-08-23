@@ -1,8 +1,8 @@
 import cv2
 
-def display_image_with_detection(image, detectionBoxes):
+def display_image_with_detection(image, detectionBoxes,video):
     image = draw_detection_on_image(image, detectionBoxes)
-    displayImage(image)
+    displayImage(image,video)
         
 
     
@@ -22,6 +22,7 @@ def draw_detection_on_image(image, detectionBoxes):
 
     return image
 
-def displayImage(image):
+def displayImage(image,video):
     cv2.imshow('Webcam', image)
+    video.write(image)
     cv2.waitKey(1)
