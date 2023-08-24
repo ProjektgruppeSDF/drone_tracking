@@ -11,7 +11,7 @@ class Detector:
     def __init__(self) -> None:
         self.model = YOLO(model_weights)
         self.modelDETR = RTDETR('rtdetr-l.pt')
-        resultsDETR = self.modelDETR.train(data='coco8yaml', epochs=100, imgsz=640)
+        #resultsDETR = self.modelDETR.train(data='coco8yaml', epochs=100, imgsz=640)
     
 
 # TODO: überlegen, wie mit mehreren Boxes der selben Klasse umzugehen ist. Am besten nur die mit höchster confidence verwenden
