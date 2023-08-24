@@ -21,9 +21,10 @@ if __name__ == "__main__":
 
 
     while True:
-        image,dt = camera.capture_image()
+        image,dt,ausrichtung = camera.capture_image()
         detection_results = detector.detect(image)
         display_image_with_detection(image, detection_results,video)
-        tracking_result =  tracker.track2(detection_results,dt)
+        tracking_result =  tracker.track(detection_results,dt,ausrichtung)
         camera.move_camera(tracking_result)
+
         

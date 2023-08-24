@@ -24,5 +24,5 @@ def draw_detection_on_image(image, detectionBoxes):
 
 def displayImage(image,video):
     cv2.imshow('Webcam', image)
-    video.write(image)
+    video.write(image) # video aufnehmen/abspeichern
     cv2.waitKey(1)

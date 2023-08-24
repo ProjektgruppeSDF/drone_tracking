@@ -20,7 +20,23 @@ class Camera():
     def capture_image(self):
         dt = datetime.now()
         ret,image = self.video.read()
-        return image,dt
+        url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?query=position)'
+        response = requests.get(url)
+
+        #Positiond er Kamera auslesen
+        response_text = response.text
+
+        values = []
+        lines = response_text.split('\n')
+        for line in lines:
+            if '=' in line:
+                key , value = line.split('=')
+                values.append(value.strip())
+            if(key == 'zoom'):
+                break
+
+
+        return image,dt,values
     
 
     def move_camera(self, tracking_result):
@@ -35,8 +51,8 @@ class Camera():
             #url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?rtilt='+str(bewegungY)
             #response = requests.get(url)
             #Kamerabewegung durch Richtung/Geschwindigkeit
-            bewegungX = -(abweichungX / 8)
-            bewegungY = abweichungy /8
+            bewegungX = -(abweichungX / 16)
+            bewegungY = abweichungy /16
             url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?continuouspantiltmove='+str(int(bewegungX))+','+str(int(bewegungY))
             response = requests.get(url)
  
