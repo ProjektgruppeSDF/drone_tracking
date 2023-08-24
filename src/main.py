@@ -5,8 +5,7 @@ from detection.detection_config import yolo_model, rtdetr_model
 from detection.display_detection import display_image_with_detection
 from tracking.tracker import Tracker
 from camera.camera import Camera
-from datetime import datetime
-import cv2
+from videosave.videosaver import Videosaver
 
 
 if __name__ == "__main__":
@@ -16,15 +15,14 @@ if __name__ == "__main__":
     camera = Camera()
     detector = Detector(yolo_model)
     tracker = Tracker()
-    video = cv2.VideoWriter('Versuch1.avi', 
-                         cv2.VideoWriter_fourcc(*'MJPG'),
-                         10, (800,450))
+    videosaver = Videosaver()
     
 
     while True:
         image,dt,ausrichtung = camera.capture_image()
         detection_results = detector.detect(image)
-        display_image_with_detection(image, detection_results,video)
+        display_image_with_detection(image, detection_results)
+        videosaver.write(image)
         tracking_result =  tracker.track(detection_results,dt,ausrichtung)
         camera.move_camera(tracking_result)
         

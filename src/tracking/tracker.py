@@ -25,7 +25,7 @@ class Tracker:
     def kalman_filter(self,measurement,tdems):
         
         # Vorhersage 
-        #self.velocity = (self.velocity*tdems)
+        #self.velocity = self.velocity*tdems
         predicted_state = self.state + self.velocity
         predicted_state_covariance = self.state_covariance + self.process_noise
         
@@ -36,13 +36,13 @@ class Tracker:
         
         return updated_state,updated_state_covariance
 
-    def track(self, detection_results,dt,ausrichtung):
+    # TODO: wenn es keine Detektion gibt, sollte der prädizierte Wert zurückgegeben werden und nicht None
+    def track(self, detection_result,dt,ausrichtung):
 
         results = []
-        if(len(detection_results)!= 0): 
-            detect1 = detection_results[0]
-            detectX = (detect1.x2 + detect1.x1) / 2
-            detectY = (detect1.y2 + detect1.y1) / 2
+        if(detection_result.exists): 
+            detectX = (detection_result.x2 + detection_result.x1) / 2
+            detectY = (detection_result.y2 + detection_result.y1) / 2
             pre = np.array([detectX,detectY])
             if(np.array_equal(self.state,[-1,-1])):
                  #initalisierung

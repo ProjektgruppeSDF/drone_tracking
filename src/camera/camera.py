@@ -51,8 +51,8 @@ class Camera():
             #url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?rtilt='+str(bewegungY)
             #response = requests.get(url)
             #Kamerabewegung durch Richtung/Geschwindigkeit
-            bewegungX = -(abweichungX / 16)
-            bewegungY = abweichungy /16
+            bewegungX = -(abweichungX / 8)
+            bewegungY = abweichungy /8
             url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?continuouspantiltmove='+str(int(bewegungX))+','+str(int(bewegungY))
             response = requests.get(url)
  
