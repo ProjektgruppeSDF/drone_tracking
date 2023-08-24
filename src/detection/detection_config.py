@@ -1,11 +1,11 @@
 from ultralytics import YOLO, RTDETR
 
 
-yolo_model_weights = "resources/yolo-Weights/yolov8n.pt"
+yolo_model_weights = "resources/yolo-Weights/yolov8n_pretrained_on_coco.pt"
 yolo_model = YOLO(yolo_model_weights)
 
 
-rtdetr_model_weights = "rtdetr-l.pt"
+rtdetr_model_weights = "resources/rtdetr-Weights/rtdetr_pretrained_on_coco.pt"
 rtdetr_model = RTDETR(rtdetr_model_weights)
 
 
