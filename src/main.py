@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     while True:
         image,dt = camera.capture_image()
-        camera_orientation = camera.get_camera_orientation()
+        camera_orientation = camera.get_camera_ptz_orientation()
         detection_results = detector.detect(image)
         display_image_with_detection(image, detection_results)
         videosaver.write(image)

@@ -1,37 +1,34 @@
-
+from .camera_url_queries import camera_videostream_flipped_query, camera_orientation_query, camera_continous_move_query
 
 import requests
 import cv2
-import numpy as np
-import os 
 from datetime import datetime
 
 
 class Camera():
 
     def __init__(self) -> None:
-        self.video = cv2.VideoCapture('rtsp://192.168.11.103/axis-media/media.amp?videocodec=h264&resolution=800x450&rotation180')
+        self.video = cv2.VideoCapture(camera_videostream_flipped_query)
 
     def capture_image(self):
         dt = datetime.now()
         ret,image = self.video.read()
         return image,dt
     
-    def get_camera_orientation(self):
-        url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?query=position)'
-        response = requests.get(url)
+    def get_camera_ptz_orientation(self):
+        response = requests.get(camera_orientation_query)
 
         response_text = response.text
 
-        values = []
+        ptz = []
         lines = response_text.split('\n')
         for line in lines:
             if '=' in line:
                 key , value = line.split('=')
-                values.append(value.strip())
+                ptz.append(value.strip())
             if(key == 'zoom'):
                 break
-    
+        return ptz
 
     def move_camera(self, tracking_result):
         try:
@@ -47,7 +44,7 @@ class Camera():
             #Kamerabewegung durch Richtung/Geschwindigkeit
             bewegungX = -(abweichungX / 8)
             bewegungY = abweichungy /8
-            url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?continuouspantiltmove='+str(int(bewegungX))+','+str(int(bewegungY))
+            url = camera_continous_move_query+str(int(bewegungX))+','+str(int(bewegungY))
             response = requests.get(url)
  
         except:
