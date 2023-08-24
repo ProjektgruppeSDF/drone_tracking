@@ -1,8 +1,12 @@
-from ultralytics import YOLO
+from ultralytics import YOLO, RTDETR
 
 
-model_weights = "resources/yolo-Weights/yolov8n.pt"
-model = YOLO(model_weights)
+yolo_model_weights = "resources/yolo-Weights/yolov8n.pt"
+yolo_model = YOLO(yolo_model_weights)
+
+
+rtdetr_model_weights = "rtdetr-l.pt"
+rtdetr_model = RTDETR(rtdetr_model_weights)
 
 
 # object classes
