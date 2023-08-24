@@ -18,11 +18,11 @@ if __name__ == "__main__":
     video = cv2.VideoWriter('Versuch1.avi', 
                          cv2.VideoWriter_fourcc(*'MJPG'),
                          10, (800,450))
-
+    software = 0   #0 := use YOLO, 1:= use RT-DETR
 
     while True:
         image,dt = camera.capture_image()
-        detection_results = detector.detect(image)
+        detection_results = detector.detect(image, software)
         display_image_with_detection(image, detection_results,video)
         tracking_result =  tracker.track2(detection_results,dt)
         camera.move_camera(tracking_result)
