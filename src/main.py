@@ -19,10 +19,11 @@ if __name__ == "__main__":
     
 
     while True:
-        image,dt,ausrichtung = camera.capture_image()
+        image,dt = camera.capture_image()
+        camera_orientation = camera.get_camera_orientation()
         detection_results = detector.detect(image)
         display_image_with_detection(image, detection_results)
         videosaver.write(image)
-        tracking_result =  tracker.track(detection_results,dt,ausrichtung)
+        tracking_result =  tracker.track(detection_results,dt,camera_orientation)
         camera.move_camera(tracking_result)
         

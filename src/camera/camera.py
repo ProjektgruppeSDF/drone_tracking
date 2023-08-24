@@ -10,20 +10,17 @@ from datetime import datetime
 class Camera():
 
     def __init__(self) -> None:
-        #self.video = requests.get('http://192.168.11.103/axis-cgi/mjpg/video.cgi', stream=True)
-        #if not self.video.status_code == 200:
-        #    print(self.video.status_code)
-        #    raise Exception("Kamera nicht erreichbar.")
-        #self.bytes_ = bytes()
         self.video = cv2.VideoCapture('rtsp://192.168.11.103/axis-media/media.amp?videocodec=h264&resolution=800x450&rotation180')
 
     def capture_image(self):
         dt = datetime.now()
         ret,image = self.video.read()
+        return image,dt
+    
+    def get_camera_orientation(self):
         url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?query=position)'
         response = requests.get(url)
 
-        #Positiond er Kamera auslesen
         response_text = response.text
 
         values = []
@@ -34,9 +31,6 @@ class Camera():
                 values.append(value.strip())
             if(key == 'zoom'):
                 break
-
-
-        return image,dt,values
     
 
     def move_camera(self, tracking_result):
