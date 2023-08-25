@@ -1,11 +1,11 @@
 
-import requests
 import numpy as np
 from datetime import datetime
 from datetime import timedelta
 
+from camera.camera import Camera
 
-from detection.detection_result import DetectionBox
+
 
 
 
@@ -62,10 +62,13 @@ class Tracker:
             results.append(pre[0])
             results.append(pre[1])
             position = [] 
-            position.append(ptz["pan"]+results[0]/(14.5)*ptz["zoom"])
-            position.append(ptz["tilt"]+results[1]/(13.5)*ptz["zoom"])
+            print(ptz["pan"])
+            print(ptz["zoom"])
+            position.append(ptz["pan"]+Camera.get_delta_horizontal_degrees(results[0], ptz["zoom"]))
+            position.append(ptz["tilt"]+Camera.get_delta_vertical_degrees(results[1], ptz["zoom"]))
             print(position)
             self.datei.write("\n"+':' + str(dt) + ': ' + str(position))
             return results
 
 
+    
