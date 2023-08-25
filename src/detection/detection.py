@@ -6,13 +6,13 @@ class Detector:
         self.model = model
 
     def detect(self, img):
-        results = self.model(img, stream=True)
+        results = self.model.detector(img, stream=True)
         detection_boxes= []
         for r in results:
             boxes = r.boxes
             for box in boxes:
-                detectionBox = getDetectionBox(box)
-                if(detectionBox.class_label == "person"):
+                detectionBox = getDetectionBox(box, self.model.class_names)
+                if(detectionBox.class_label == self.model.target):
                     detection_boxes.append(detectionBox)
             if(self.nothing_detected(detection_boxes)):
                 return DetectionBox(False, 0, 0, 0, 0, 0, "")

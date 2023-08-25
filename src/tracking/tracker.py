@@ -38,7 +38,7 @@ class Tracker:
         return updated_state,updated_state_covariance
 
     # TODO: wenn es keine Detektion gibt, sollte der prädizierte Wert zurückgegeben werden und nicht None
-    def track(self, detection_result,dt,ausrichtung):
+    def track(self, detection_result,dt,ptz):
 
         results = []
         if(detection_result.exists): 
@@ -61,11 +61,11 @@ class Tracker:
 
             results.append(pre[0])
             results.append(pre[1])
-            position = [] #0 Pan, 1 Tilt, 2 Zoom
-            position.append(float(ausrichtung[0])+results[0]/(14.5)*float(ausrichtung[2]))
-            position.append(float(ausrichtung[1])+results[1]/(13.5)*float(ausrichtung[2]))
+            position = [] 
+            position.append(ptz["pan"]+results[0]/(14.5)*ptz["zoom"])
+            position.append(ptz["tilt"]+results[1]/(13.5)*ptz["zoom"])
             print(position)
-            self.datei.write("\n"+str(position))
+            self.datei.write("\n"+':' + str(dt) + ': ' + str(position))
             return results
 
 

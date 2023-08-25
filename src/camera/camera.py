@@ -1,4 +1,4 @@
-from .camera_url_queries import camera_videostream_flipped_query, camera_orientation_query, camera_continous_move_query
+from .camera_url_queries import query_videostream_flipped_, query_get_orientation, get_query_continous_move
 
 import requests
 import cv2
@@ -8,7 +8,7 @@ from datetime import datetime
 class Camera():
 
     def __init__(self) -> None:
-        self.video = cv2.VideoCapture(camera_videostream_flipped_query)
+        self.video = cv2.VideoCapture(query_videostream_flipped_)
 
     def capture_image(self):
         dt = datetime.now()
@@ -16,18 +16,17 @@ class Camera():
         return image,dt
     
     def get_camera_ptz_orientation(self):
-        response = requests.get(camera_orientation_query)
+        response = requests.get(query_get_orientation)
 
         response_text = response.text
 
-        ptz = []
+        ptz = {}
         lines = response_text.split('\n')
         for line in lines:
             if '=' in line:
                 key , value = line.split('=')
-                ptz.append(value.strip())
-            if(key == 'zoom'):
-                break
+                if(key == "pan" or key == "tilt" or key == "zoom"):
+                    ptz[key] = float(value.strip())
         return ptz
 
     def move_camera(self, tracking_result,zoom):
@@ -39,14 +38,16 @@ class Camera():
             #bewegungX = -(abweichungX / 60)
             #bewegungY = -(abweichungy /60)
             #url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?rpan='+str(bewegungX)
-            #response = requests.get(url)
+            #response = requests.get(url)S
             #url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?rtilt='+str(bewegungY)
             #response = requests.get(url)
             #Kamerabewegung durch Richtung/Geschwindigkeit
             #Kamerabewgung abhängig von Abstand zum Mittelpunkt des Bildes sowie des Zooms
-            bewegungX = -(abweichungX / (8 * zoom))
-            bewegungY = (abweichungy /(8 * zoom))
-            url = camera_continous_move_query+str(int(bewegungX))+','+str(int(bewegungY))
+            bewegungX = -(abweichungX / (16 * float(zoom)))
+            bewegungY = (abweichungy /(16 * float(zoom)))
+            url = get_query_continous_move(bewegungX, bewegungY)
+            print(zoom)
+            print(url)
             response = requests.get(url)
  
         except:
