@@ -32,9 +32,9 @@ class Camera():
 
     def move_camera(self, tracking_result,zoom):
         try:
-            #Auflösung ist 800x450 und 400,225 ist der Mittelpunkt des Bildes
-            abweichungX = 400 - tracking_result[0] 
-            abweichungy = 225 - tracking_result[1]
+            #Auflösung ist 1920x1080 und 960,540 ist der Mittelpunkt des Bildes
+            abweichungX = 960 - tracking_result[0] 
+            abweichungy = 540 - tracking_result[1]
             #Kamerabewegung mit relativer Position
             #bewegungX = -(abweichungX / 60)
             #bewegungY = -(abweichungy /60)
@@ -44,8 +44,8 @@ class Camera():
             #response = requests.get(url)
             #Kamerabewegung durch Richtung/Geschwindigkeit
             #Kamerabewgung abhängig von Abstand zum Mittelpunkt des Bildes sowie des Zooms
-            bewegungX = -(abweichungX / (13 * float(zoom)))
-            bewegungY = (abweichungy /(13 * float(zoom)))
+            bewegungX = -(abweichungX / (25 * float(zoom)))
+            bewegungY = (abweichungy /(25 * float(zoom)))
             print(bewegungX)
             url = get_query_continous_move(bewegungX, bewegungY)
             print(zoom)

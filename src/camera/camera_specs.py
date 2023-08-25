@@ -1,4 +1,4 @@
-image_dimension = (800, 450)
+image_dimension = (1920, 1080)
 fov_angle_horizontal_min_zoom = 61.8
 fov_angle_vertical_min_zoom =  37.2
 fov_angle_horizontal_max_zoom = 6.7
