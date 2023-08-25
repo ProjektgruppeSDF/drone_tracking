@@ -1,6 +1,10 @@
-Ultralitics, enthält Implementation von YOLO
+Ultralitics, enthält Implementation von YOLO und dem RT-DETR
 
 https://docs.ultralytics.com/usage/python/
+
+Diskussion, die bei Fehlern beim Training von RT-DETR helfen kann
+
+https://github.com/ultralytics/ultralytics/issues/3256
 
 --------
 
