@@ -38,7 +38,7 @@ class Tracker:
         return updated_state,updated_state_covariance
 
     # TODO: wenn es keine Detektion gibt, sollte der prädizierte Wert zurückgegeben werden und nicht None
-    def track(self, detection_result,dt,ptz):
+    def track(self, detection_result,dt,ptz,detection_box):
 
         results = []
         if(detection_result.exists): 
@@ -67,7 +67,7 @@ class Tracker:
             position.append(ptz["pan"]+Camera.get_delta_horizontal_degrees(results[0], ptz["zoom"]))
             position.append(ptz["tilt"]+Camera.get_delta_vertical_degrees(results[1], ptz["zoom"]))
             print(position)
-            self.datei.write("\n"+':' + str(dt) + ': ' + str(position))
+            self.datei.write("\n"+':' + str(dt) + ': ' + str(position) + ' Confidence: '+ str(detection_box.confidence))
             return results
 
 

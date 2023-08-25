@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     os.environ["NO_PROXY"] = "192.168.11.103"
 
-    detection_model = get_yolo_model_person()
+    detection_model = get_rtdetr_model_drone()
 
     camera = Camera()
     detector = Detector(detection_model)
@@ -26,6 +26,6 @@ if __name__ == "__main__":
         detection_results = detector.detect(image)
         display_image_with_detection(image, detection_results)
         videosaver.write(image)
-        tracking_result =  tracker.track(detection_results,dt,ptz)
+        tracking_result =  tracker.track(detection_results,dt,ptz,detection_results)
         camera.move_camera(tracking_result,ptz["zoom"])
         

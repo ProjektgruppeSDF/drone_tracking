@@ -42,7 +42,7 @@ def get_yolo_model_drone():
 
 
 def get_rtdetr_model_drone():
-    rtdetr_model_drone_weights = ''
+    rtdetr_model_drone_weights = 'resources/rtdetr-Weights/rtdetr_trained_on_simple_drone.pt'
     rtdetr_model_drone = RTDETR(rtdetr_model_drone_weights)
     return Model(rtdetr_model_drone, class_names_drone_only, "drone")
 
