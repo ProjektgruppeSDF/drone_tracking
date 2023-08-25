@@ -10,7 +10,7 @@ from detection.detection_result import DetectionBox
 
 
 class Tracker: 
-    state_covariance = np.eye(2) * 30.0 
+    state_covariance = np.eye(2) * 15.0 
     process_noise = np.eye(2) * 5  
     measurement_noise = np.eye(2) * 10 
     velocity = np.array([0,0]) 
@@ -20,12 +20,13 @@ class Tracker:
     
 
     def __init__(self) -> None:
-        self.datei = open('position.txt','r+')
+        self.datei = open('position.txt','a')
 
     def kalman_filter(self,measurement,tdems):
         
         # Vorhersage 
-        #self.velocity = self.velocity*tdems
+        self.velocity[0] = self.velocity[0]*tdems
+        self.velocity[1] = self.velocity[1]*tdems
         predicted_state = self.state + self.velocity
         predicted_state_covariance = self.state_covariance + self.process_noise
         
@@ -60,9 +61,9 @@ class Tracker:
 
             results.append(pre[0])
             results.append(pre[1])
-            position = [] #0 Pan 1 Tilt 2 Zoom
+            position = [] #0 Pan, 1 Tilt, 2 Zoom
             position.append(float(ausrichtung[0])+results[0]/(14.5)*float(ausrichtung[2]))
-            position.append(float(ausrichtung[1])+results[1]/(13.5)**float(ausrichtung[2]))
+            position.append(float(ausrichtung[1])+results[1]/(13.5)*float(ausrichtung[2]))
             print(position)
             self.datei.write("\n"+str(position))
             return results

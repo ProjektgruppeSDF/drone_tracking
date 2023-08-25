@@ -30,9 +30,10 @@ class Camera():
                 break
         return ptz
 
-    def move_camera(self, tracking_result):
+    def move_camera(self, tracking_result,zoom):
         try:
-            abweichungX = 400 - tracking_result[0] #Auflösung ist 800x450 und 400,225 ist der Mittelpunkt des Bildes
+            #Auflösung ist 800x450 und 400,225 ist der Mittelpunkt des Bildes
+            abweichungX = 400 - tracking_result[0] 
             abweichungy = 225 - tracking_result[1]
             #Kamerabewegung mit relativer Position
             #bewegungX = -(abweichungX / 60)
@@ -42,8 +43,9 @@ class Camera():
             #url = 'http://192.168.11.103/axis-cgi/com/ptz.cgi?rtilt='+str(bewegungY)
             #response = requests.get(url)
             #Kamerabewegung durch Richtung/Geschwindigkeit
-            bewegungX = -(abweichungX / 8)
-            bewegungY = abweichungy /8
+            #Kamerabewgung abhängig von Abstand zum Mittelpunkt des Bildes sowie des Zooms
+            bewegungX = -(abweichungX / (8 * zoom))
+            bewegungY = (abweichungy /(8 * zoom))
             url = camera_continous_move_query+str(int(bewegungX))+','+str(int(bewegungY))
             response = requests.get(url)
  

@@ -25,5 +25,5 @@ if __name__ == "__main__":
         display_image_with_detection(image, detection_results)
         videosaver.write(image)
         tracking_result =  tracker.track(detection_results,dt,camera_orientation)
-        camera.move_camera(tracking_result)
+        camera.move_camera(tracking_result,camera_orientation[2])
         
