@@ -30,7 +30,7 @@ class Camera():
                     ptz[key] = float(value.strip())
         return ptz
 
-
+# TODO: der Faktor 1/25 sollte zoomabhängig gewählt sein
     def move_camera(self, tracking_result,zoom):
         try:
             #Auflösung ist 800x450 und 400,225 ist der Mittelpunkt des Bildes
@@ -44,8 +44,7 @@ class Camera():
             vx = -(int(abweichungX) / 25)
             vy = (int(abweichungy) / 25 )
             url = get_query_continous_move(vx, vy)
-            print(url)
-            response = requests.get(url)
+            requests.get(url)
  
         except:
             print("keine bounding box")
