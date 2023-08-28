@@ -10,9 +10,9 @@ from camera.camera import Camera
 
 
 class Tracker: 
-    state_covariance = np.eye(2) * 15.0 
+    state_covariance = np.eye(2) * 1
     process_noise = np.eye(2) * 5  
-    measurement_noise = np.eye(2) * 10 
+    measurement_noise = np.eye(2) * 1 
     velocity = np.array([0,0]) 
     alt = np.array([-1,-1])
     pdt = datetime.date
@@ -31,43 +31,36 @@ class Tracker:
         predicted_state_covariance = self.state_covariance + self.process_noise
         
         # Filterung
-        kalman_gain = predicted_state_covariance / (predicted_state_covariance + self.measurement_noise)
-        updated_state = predicted_state + kalman_gain * (measurement - predicted_state)
-        updated_state_covariance = (np.eye(2) - kalman_gain) * predicted_state_covariance
-        
-        return updated_state,updated_state_covariance
+        kalman_gain = np.dot(predicted_state_covariance,np.linalg.inv(predicted_state_covariance + self.measurement_noise))
+        self.state+= np.dot(kalman_gain,(measurement - predicted_state))
+        self.state_covariance = (np.eye(2) - kalman_gain) * predicted_state_covariance
+
 
     # TODO: wenn es keine Detektion gibt, sollte der prädizierte Wert zurückgegeben werden und nicht None
-    def track(self, detection_result,dt,ptz,detection_box):
+    
+    def track(self, detection_result,dt):
 
         results = []
         if(detection_result.exists): 
             detectX = (detection_result.x2 + detection_result.x1) / 2
             detectY = (detection_result.y2 + detection_result.y1) / 2
-            pre = np.array([detectX,detectY])
+            measurement = np.array([detectX,detectY])
             if(np.array_equal(self.state,[-1,-1])):
                  #initalisierung
-                self.state = pre
+                self.state = measurement
                 self.velocity = [0,0]
-                self.alt = pre
+                self.alt = measurement
                 self.pdt = dt
             else:
                 tde = self.pdt - dt
                 tdems = int(tde/timedelta(milliseconds=1))
-                self.state, self.state_covariance= self.kalman_filter(pre,tdems)
+                self.kalman_filter(measurement,tdems)
 
-                self.velocity = (pre-self.alt) /tdems
-                self.alt = pre
+                self.velocity = (self.state-self.alt) /tdems
+                self.alt = self.state
 
-            results.append(pre[0])
-            results.append(pre[1])
-            position = [] 
-            print(ptz["pan"])
-            print(ptz["zoom"])
-            position.append(ptz["pan"]+Camera.get_delta_horizontal_degrees(results[0], ptz["zoom"]))
-            position.append(ptz["tilt"]+Camera.get_delta_vertical_degrees(results[1], ptz["zoom"]))
-            print(position)
-            self.datei.write("\n"+':' + str(dt) + ': ' + str(position) + ' Confidence: '+ str(detection_box.confidence))
+            results.append(self.state[0])
+            results.append(self.state[1])
             return results
 
 
