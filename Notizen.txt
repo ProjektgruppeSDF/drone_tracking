@@ -1,0 +1,11 @@
+Wie ist im Code die Bewegung der Kamera momentan implementiert (und wie nicht):
+
+Die Bewegung der Kamera erfolgt über einen continous move query. Dieser erhält einen Geschwindigkeitsvektor (dx/dt, dy/dt) und bewegt den Kameramittelpunkt kontinuierlich in diese Richtung. Der Geschwindigkeitsvektor wird bestimmt, indem man zunächst den Abstandsvektor zwischen Position und Bildmittelpunkt berechnet. Um den Geschwindigkeitsvektor zu bestimmen, multipliziert man den Abstandsvektor mit einem Faktor (1/25), der durch Ausprobieren geeignet gewählt wurde.
+
+Die Bewegung der Kamera erfolgt insbesondere nicht dadurch, dass man eine Query mit gewünschten Werten der Winkelveränderung übergibt!
+
+
+Problem: Bei höheren Zoomstufen ist der Geschwindigkeitsvektor viel zu groß. Dies könnte man dadurch lösen, indem man den Faktor (momentan 1/25) als eine Funktion des Zooms bestimmt. Der Faktor sollte proportional zum FoV sein.
+
+
+--------------------
