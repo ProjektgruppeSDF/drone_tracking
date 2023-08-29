@@ -33,9 +33,9 @@ class Camera():
 # TODO: der Faktor 1/25 sollte zoomabhängig gewählt sein
     def move_camera(self, tracking_result,zoom):
         try:
-            #Auflösung ist 800x450 und 400,225 ist der Mittelpunkt des Bildes
-            abweichungX = 400 - int(tracking_result[0]) 
-            abweichungy = 225 - int(tracking_result[1])
+            #Auflösung ist 1920x1080 und 960,540 ist der Mittelpunkt des Bildes
+            abweichungX = 960 - int(tracking_result[0]) 
+            abweichungy = 540 - int(tracking_result[1])
             print(abweichungX)
             print(abweichungy)
             
