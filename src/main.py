@@ -8,6 +8,7 @@ from camera.camera import Camera
 from videosave.videosaver import Videosaver
 
 
+
 if __name__ == "__main__":
 
     os.environ["NO_PROXY"] = "192.168.11.103"

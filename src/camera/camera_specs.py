@@ -9,7 +9,7 @@ min_zoom = 1
 max_zoom = 9999
 
 
-# 
+# TODO: für zoomabhängige Wahl des Proportionalitätsfaktors in move_camera muss noch die vertikale fov-Abhängigkeit gemessen werden
 def get_fov_horizontal(zoom):
     
     zoom_measurements = np.array([1,25,50,75,100,200,300,400,500,750,1000,1500,2000,3000,4000,5000,7500,9500])
