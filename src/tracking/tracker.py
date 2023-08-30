@@ -10,13 +10,14 @@ from camera.camera import Camera
 
 
 class Tracker: 
+    init_state = np.array([-1,-1])
     state_covariance = np.eye(2) * 1
     process_noise = np.eye(2) * 5  
     measurement_noise = np.eye(2) * 1 
     velocity = np.array([0,0]) 
     alt = np.array([-1,-1])
     pdt = datetime.date
-    state = np.array([-1,-1])
+    state = init_state
     
 
     def __init__(self) -> None:
@@ -41,27 +42,29 @@ class Tracker:
     def track(self, detection_result,dt):
 
         results = []
-        if(detection_result.exists): 
-            detectX = (detection_result.x2 + detection_result.x1) / 2
-            detectY = (detection_result.y2 + detection_result.y1) / 2
-            measurement = np.array([detectX,detectY])
-            if(np.array_equal(self.state,[-1,-1])):
-                 #initalisierung
-                self.state = measurement
-                self.velocity = [0,0]
-                self.alt = measurement
-                self.pdt = dt
-            else:
-                tde = self.pdt - dt
-                tdems = int(tde/timedelta(milliseconds=1))
-                self.kalman_filter(measurement,tdems)
+        detectX = (detection_result.x2 + detection_result.x1) / 2
+        detectY = (detection_result.y2 + detection_result.y1) / 2
+        measurement = np.array([detectX,detectY])
+        if(np.array_equal(self.state, self.init_state)):
+                #initalisierung
+            self.state = measurement
+            self.velocity = [0,0]
+            self.alt = measurement
+            self.pdt = dt
+        else:
+            tde = self.pdt - dt
+            tdems = int(tde/timedelta(milliseconds=1))
+            self.kalman_filter(measurement,tdems)
 
-                self.velocity = (self.state-self.alt) /tdems
-                self.alt = self.state
+            self.velocity = (self.state-self.alt) /tdems
+            self.alt = self.state
 
-            results.append(self.state[0])
-            results.append(self.state[1])
-            return results
+        results.append(self.state[0])
+        results.append(self.state[1])
+        return results
+    
 
+    def reintialise(self):
+        self.state = self.init_state
 
     
