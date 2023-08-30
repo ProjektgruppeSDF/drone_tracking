@@ -10,6 +10,7 @@ from tracking.target_loss_monitor import TargetLossMonitorer
 
 
 
+
 if __name__ == "__main__":
 
     os.environ["NO_PROXY"] = "192.168.11.103"
@@ -17,15 +18,17 @@ if __name__ == "__main__":
     program_mode = ProgramMode(Modes.SCAN_MODE)
     
     camera = Camera()
-    detection_model = get_yolo_model_person()
+    detection_model = get_yolo_model_drone_good()
     detector = Detector(detection_model)
     tracker = Tracker()
     target_loss_monitorer = TargetLossMonitorer()
     videosaver = Videosaver()
+    
 
     while True:
 
         #Scan Modus
+        print("enter Scan Modus")
         while True:
             image,dt = camera.capture_image()
             ptz = camera.get_camera_ptz_orientation()
@@ -34,23 +37,26 @@ if __name__ == "__main__":
                 display_image_with_detection(image, detection_results)
                 tracking_result =  tracker.track(detection_results,dt)
                 camera.move_camera(tracking_result,ptz["zoom"])
+                videosaver.write(image)
                 break
             else:
                 camera.move_scan_camera(ptz["tilt"])
-                displayImage(image)
+                displayImage(image,"Scan Modus")
                 videosaver.write(image)
-
+        
         #Tracking Modus
+        print("enter Tracking Modus")
         while True:
             image,dt = camera.capture_image()
             ptz = camera.get_camera_ptz_orientation()
             detection_results = detector.detect(image)
             if(not detection_results.exists):
+                displayImage(image,"Tracking Modus")
                 target_loss_monitorer.no_target_detection(dt)
                 if target_loss_monitorer.is_target_lost:
-                    tracker.reintialise()
+                    tracker.reinitialise()
                     break
-            elif(detection_results.exists):            
+            else:            
                 display_image_with_detection(image, detection_results)
                 tracking_result =  tracker.track(detection_results,dt)
                 target_loss_monitorer.target_detection(dt)

@@ -64,7 +64,7 @@ class Tracker:
         return results
     
 
-    def reintialise(self):
+    def reinitialise(self):
         self.state = self.init_state
 
     

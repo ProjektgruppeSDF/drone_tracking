@@ -27,8 +27,6 @@ class Detector:
         for detection_box in detection_boxes:
             if(detection_box.confidence > result.confidence):
                 result = detection_box
-
-        print(result.confidence)
         return result
     
         
