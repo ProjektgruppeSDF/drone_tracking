@@ -1,5 +1,5 @@
 from .camera_specs import *
-from .camera_url_queries import query_videostream_flipped_, query_get_orientation, get_query_continous_move
+from .camera_url_queries import *
 from.camera_flip_monitorer import CameraFlipMonitorer
 
 
@@ -67,7 +67,7 @@ class Camera():
         requests.get(url)
 
 
-    def move_scan_camera(self, tilt):
+    def scan(self, tilt):
 
         if(tilt<-75):
             self.y_direction = -1
@@ -76,5 +76,13 @@ class Camera():
 
         url = get_query_continous_move(20, self.y_direction*-5)
         requests.get(url)
+
+    def move_to_default_position():
+        print("move_to_default_position")
+        requests.get(get_query_continous_move(0, 0))
+        requests.get(get_query_absolute_pan(0))
+        requests.get(get_query_absolute_tilt(0))
+        requests.get(get_query_zoom(1))
+        
 
         
