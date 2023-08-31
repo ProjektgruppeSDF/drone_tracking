@@ -1,6 +1,6 @@
 from config.global_config import *
 
-query_videostream_flipped_ = "rtsp://{}/axis-media/media.amp?videocodec=jpeg&resolution={}x{}&fps={}".format(camera_ip, camera_resolution[0], camera_resolution[1], camera_fps)
+query_videostream_flipped_ = "rtsp://{}/axis-media/media.amp?videocodec=jpeg&resolution={}x{}&fps={}&rotation=180".format(camera_ip, camera_resolution[0], camera_resolution[1], camera_fps)
 query_get_orientation = "http://{}/axis-cgi/com/ptz.cgi?query=position)".format(camera_ip)
 
 

@@ -34,7 +34,7 @@ if __name__ == "__main__":
     
     
     camera = Camera()
-    detection_model = get_yolo_model_person()
+    detection_model = get_yolo_model_drone_good()
     detector = Detector(detection_model)
     tracker = Tracker()
     target_loss_monitorer = TargetLossMonitorer()

@@ -17,6 +17,7 @@ class Camera():
         self.camera_flip_monitorer = CameraFlipMonitorer(self._get_ptz()["pan"])
         self.y_direction = 1
         self.resolution = camera_resolution
+        self.flip_faktor = 1
         
 
     def capture_image(self):
@@ -38,8 +39,8 @@ class Camera():
                 key , value = line.split('=')
 
                 # für Debugging: Es kam vermutlich einmal keine response im erwarteten Format zurück
-                print(lines)
-                print("\n")
+                #print(lines)
+                #print("\n")
 
 
                 if(key == "pan" or key == "tilt" or key == "zoom"):
@@ -49,10 +50,7 @@ class Camera():
     
     def get_camera_ptz_orientation(self):
         ptz = self._get_ptz()
-        if(self.camera_flip_monitorer.check_camera_flipped(ptz["pan"])):
-            # siehe Kommentar in camer_flip_monitorer.py
-            url = get_query_continous_move(0, 0)
-            requests.get(url) 
+        self.flip_faktor = self.camera_flip_monitorer.check_camera_flipped(ptz["pan"])
         return ptz
 
 # TODO: der Faktor 1/25 sollte zoomabhängig gewählt sein
@@ -65,9 +63,9 @@ class Camera():
         #Kamerabewegung durch Richtung/Geschwindigkeit
         #Kamerabewgung abhängig von Abstand zum Mittelpunkt des Bildes sowie des Zooms
         
-        vx = -(int(abweichungX) / 25)
-        vy = (int(abweichungy) / 25 )
-        url = get_query_continous_move(vx, vy)
+        vx = (int(abweichungX) / 25)
+        vy = -(int(abweichungy) / 25 )
+        url = get_query_continous_move(vx, self.flip_faktor * vy)
         requests.get(url)
 
 
@@ -78,7 +76,7 @@ class Camera():
         elif(tilt>-10):
             self.y_direction = 1
 
-        url = get_query_continous_move(20, self.y_direction*-5)
+        url = get_query_continous_move(20, self.y_direction*-15)
         requests.get(url)
 
     def move_to_default_position():
