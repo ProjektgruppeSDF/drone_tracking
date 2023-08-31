@@ -34,20 +34,13 @@ def get_rtdetr_model_person():
     return Model(rtdetr_model, class_names_coco, "person")
    
 
-
-def get_yolo_model_drone_simple():
-    yolo_model_drone_weights = 'resources/yolo-Weights/yolo_trained_on_simple_drone_dataset.pt'
-    yolo_model_drone = YOLO(yolo_model_drone_weights)
-    return Model(yolo_model_drone, class_names_drone_only, "drone")
-
-
-def get_rtdetr_model_drone_simple():
-    rtdetr_model_drone_weights = 'resources/rtdetr-Weights/rtdetr_trained_on_simple_drone.pt'
-    rtdetr_model_drone = RTDETR(rtdetr_model_drone_weights)
-    return Model(rtdetr_model_drone, class_names_drone_only, "drone")
+def get_rtdetr_model_drone():
+    rtdetr_model_weights = "resources/rtdetr-Weights/rtdetr_trained_on_good_drone.pt"
+    rtdetr_model = RTDETR(rtdetr_model_weights)
+    return Model(rtdetr_model, class_names_drone_only, "drone")
 
 
-def get_yolo_model_drone_good():
+def get_yolo_model_drone():
     yolo_model_drone_weights = 'resources/yolo-Weights/yolo_trained_on_good_drone_dataset.pt'
     yolo_model_drone = YOLO(yolo_model_drone_weights)
     return Model(yolo_model_drone, class_names_drone_only, "drone")
