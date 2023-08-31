@@ -38,15 +38,19 @@ class Camera():
             if '=' in line:
                 key , value = line.split('=')
 
-                # für Debugging: Es kam vermutlich einmal keine response im erwarteten Format zurück
-                #print(lines)
-                #print("\n")
-
-
                 if(key == "pan" or key == "tilt" or key == "zoom"):
                     ptz[key] = float(value.strip())
 
+        # in seltenen Fällen scheitert die Abfrage, eventuell Verbindungsprobleme?
+        self._raise_exception_on_failed_query(ptz)
+        
         return ptz
+    
+    def _raise_exception_on_failed_query(self, ptz):
+        actual_keys = sorted(ptz.keys())
+        expected_keys = ["pan", "tilt", "zoom"]
+        if not actual_keys == expected_keys:
+            raise Exception("Warnung: ptz-query gescheitert.")
     
     def get_camera_ptz_orientation(self):
         ptz = self._get_ptz()
