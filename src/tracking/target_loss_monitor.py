@@ -21,4 +21,6 @@ class TargetLossMonitorer():
         timedelta_inS= timedelta_last_detection/timedelta(seconds=1)
         if (timedelta_inS >= self.target_lost_threshold_sec):
             self.is_target_lost = True
-        pass
+    
+    def get_time_last_detection(self):
+        return self.time_last_detection

@@ -1,6 +1,8 @@
 from .camera_specs import *
 from .camera_url_queries import *
 from.camera_flip_monitorer import CameraFlipMonitorer
+from config.global_config import camera_resolution
+from .resolution import get_center_pixel
 
 
 import requests
@@ -14,6 +16,7 @@ class Camera():
         self.video = cv2.VideoCapture(query_videostream_flipped_)
         self.camera_flip_monitorer = CameraFlipMonitorer(self._get_ptz()["pan"])
         self.y_direction = 1
+        self.resolution = camera_resolution
         
 
     def capture_image(self):
@@ -54,9 +57,10 @@ class Camera():
 
 # TODO: der Faktor 1/25 sollte zoomabhängig gewählt sein
     def move_camera(self, tracking_result,zoom):
-        #Auflösung ist 1920x1080 und 960,540 ist der Mittelpunkt des Bildes
-        abweichungX = 960 - int(tracking_result[0]) 
-        abweichungy = 540 - int(tracking_result[1])
+      
+        center_pixel = get_center_pixel(self.resolution)
+        abweichungX = center_pixel[0] - int(tracking_result[0]) 
+        abweichungy = center_pixel[1]- int(tracking_result[1])
         
         #Kamerabewegung durch Richtung/Geschwindigkeit
         #Kamerabewgung abhängig von Abstand zum Mittelpunkt des Bildes sowie des Zooms
