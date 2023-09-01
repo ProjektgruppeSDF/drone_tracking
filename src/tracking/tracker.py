@@ -10,31 +10,37 @@ from camera.camera import Camera
 
 
 class Tracker: 
-    init_state = np.array([-1,-1])
-    state_covariance = np.eye(2) * 1
-    process_noise = np.eye(2) * 5  
-    measurement_noise = np.eye(2) * 1 
-    velocity = np.array([0,0]) 
+    init_state = np.array([-1,-1,0,0])
+    state_covariance = np.eye(4) * 1
+    process_noise = np.eye(4) * 5  
+    measurement_noise = np.eye(4) * 1 
     alt = np.array([-1,-1])
     pdt = datetime.date
     state = init_state
     
 
-    def __init__(self) -> None:
-        self.datei = open('position.txt','a')
+    #def __init__(self) -> None:
+        #self.datei = open('position.txt','a')
 
     def kalman_filter(self,measurement,tdems):
+        measurement_funktion=np.matrix([[1,0,0,0],
+                       [0,1,0,0]])
+        dynamic = np.matrix([[1,0,tdems,0],
+                       [0,1,0,tdems],
+                       [0,0,1,0],
+                       [0,0,0,1],])
         
         # Vorhersage 
-        self.velocity[0] = self.velocity[0]*tdems
-        self.velocity[1] = self.velocity[1]*tdems
-        predicted_state = self.state + self.velocity
-        predicted_state_covariance = self.state_covariance + self.process_noise
+        predicted_state = dynamic @ self.state
+        predicted_state_covariance = dynamic @ self.state_covariance @ np.transpose(dynamic) + self.process_noise
         
         # Filterung
-        kalman_gain = np.dot(predicted_state_covariance,np.linalg.inv(predicted_state_covariance + self.measurement_noise))
-        self.state+= np.dot(kalman_gain,(measurement - predicted_state))
-        self.state_covariance = (np.eye(2) - kalman_gain) * predicted_state_covariance
+        sk = measurement_funktion @ predicted_state_covariance @ np.transpose(measurement_funktion) + self.measurement_noise
+        wk = predicted_state_covariance @ np.transpose(measurement_funktion) @ np.linalg.inv(sk)
+        vk = measurement - measurement_funktion @ predicted_state
+        self.state = predicted_state + wk @ vk
+        self.state_covariance = predicted_state_covariance - wk @ sk @ np.transpose(wk)
+
 
 
     # TODO: wenn es keine Detektion gibt, sollte der prädizierte Wert zurückgegeben werden und nicht None
@@ -47,16 +53,17 @@ class Tracker:
         measurement = np.array([detectX,detectY])
         if(np.array_equal(self.state, self.init_state)):
                 #initalisierung
-            self.state = measurement
-            self.velocity = [0,0]
-            self.alt = measurement
+            self.state[0] = measurement[0]
+            self.state[1]= measurement[1]
+            self.alt = self.state
             self.pdt = dt
         else:
             tde = self.pdt - dt
             tdems = int(tde/timedelta(milliseconds=1))
             self.kalman_filter(measurement,tdems)
 
-            self.velocity = (self.state-self.alt) /tdems
+            self.state[2] = (self.state[0]-self.alt[0])/ tdems
+            self.state[3] = (self.state[1]-self.alt[1])/ tdems
             self.alt = self.state
 
         results.append(self.state[0])
@@ -67,4 +74,3 @@ class Tracker:
     def reinitialise(self):
         self.state = self.init_state
 
-    

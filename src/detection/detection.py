@@ -12,7 +12,7 @@ class Detector:
             boxes = r.boxes
             for box in boxes:
                 detectionBox = getDetectionBox(box, self.model.class_names)
-                if(detectionBox.class_label == self.model.target):
+                if((detectionBox.class_label == self.model.target) & (float(detectionBox.confidence) > float(3/10))):
                     detection_boxes.append(detectionBox)
             if(self.nothing_detected(detection_boxes)):
                 return DetectionBox(False, 0, 0, 0, 0, 0, "")
