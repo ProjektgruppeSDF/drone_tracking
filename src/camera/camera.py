@@ -66,9 +66,15 @@ class Camera():
         
         #Kamerabewegung durch Richtung/Geschwindigkeit
         #Kamerabewgung abhängig von Abstand zum Mittelpunkt des Bildes sowie des Zooms
-        
-        vx = (int(abweichungX) / 25)
-        vy = -(int(abweichungy) / 25 )
+        if(abs(abweichungX) < 25):
+            vx = 0
+        else:
+            vx = (int(abweichungX) / 25)
+        if(abs(abweichungy) < 25):
+            vy = 0
+            self.flip_faktor = 1
+        else:
+            vy = -(int(abweichungy) / 25 )
         url = get_query_continous_move(vx, self.flip_faktor * vy)
         requests.get(url)
 
@@ -80,7 +86,7 @@ class Camera():
         elif(tilt>-10):
             self.y_direction = 1
 
-        url = get_query_continous_move(25, self.y_direction*-15)
+        url = get_query_continous_move(34, self.y_direction*-5)
         requests.get(url)
 
     def move_to_default_position():
