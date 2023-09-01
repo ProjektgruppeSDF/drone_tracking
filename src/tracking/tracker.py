@@ -12,9 +12,9 @@ from camera.camera import Camera
 class Tracker: 
     init_state = np.array([-1,-1,0,0])
     state_covariance = np.eye(4) * 1
-    process_noise = np.eye(4) * 5  
-    measurement_noise = np.eye(4) * 1 
-    alt = np.array([-1,-1])
+    process_noise = np.eye(4) * 5 
+    measurement_noise = np.eye(4) * 10 
+    alt = init_state
     pdt = datetime.date
     state = init_state
     
