@@ -31,5 +31,5 @@ class ImageProcessor:
 
         self.videosaver.write(image)
 
-        self.last_results = (detection_results.exists, image, time, ptz  )
+        self.last_results = (detection_results.exists, time, ptz)
         return self.last_results
