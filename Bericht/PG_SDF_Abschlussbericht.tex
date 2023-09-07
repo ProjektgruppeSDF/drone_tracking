@@ -41,9 +41,10 @@ Lassen wir das weg? Spart jedenfalls Arbeit
 
 \section{Theorie}
 
-\subsection{YOLO}
+\subsection{YOLOv8}
+YOLO \cite{YOLO} (You Only Look Once) ist ein Objektdetektionsmodell. Es ist ein sog. One-Stage-Detektor. Im Gegensatz zu den ebenso populären Two-Stage-Detektoren wird die Objektdetektion in einem einzigen Vorwärtsdurchlauf durchgeführt und das Netz verzichtet auf eine Vorstufe mit Regionsvorschlägen.\\\\
+YOLOv8 unterscheidet sich architektonisch nur gerinfügig von YOLOv5 und bringt im Wesentlichen Vereinfachungen in der Nutzbarkeit für Entwickler und Anwender mit sich. YOLOv5 wiederum ist auch eine architektonische Weiterentwicklung von YOLO.\cite{YOLOv5}\\\\ Das CSPDarknet53-Backbone erweitert das ursprüngliche Darknet-Backbone um die Cross-Stage-Partial-Technik. Diese partioniert Feature Maps und führt die Partitionen in einer späteren Schicht wieder zusammen.\\\\ Der sogenannte Head bildet Feature Maps, die es vom sog. Neck erhält, auf die finalen Prediktionen ab. Der Neck dient als Verbindungsglied zwischen Head und Backbone. YOLOv5 verwendet als Neck ein Spatial-Pyramid-Pooling-Netzwerk (SPP). SPP wendet mehrere Pooling-Operationen mit verschiedenen Rastergrößen auf eine Feature-Map an und kombiniert die Resultate zu ner einzelnen Merkmalsrepräsentation. SPP hat einen positiven Effekt auf die Detektion von Objekten unterschiedlicher Größen. 
 
-XXXX Hier einfach Stichpunkte vom Startvortrag ausformulieren XXXX
 
 \subsection{RT-DETR}
 
@@ -112,10 +113,21 @@ XXXXXXXXX Ein paar Worte zur Methode der Kamerasteurung? XXXXXXX
 
 \begin{thebibliography}{3}
 
+\bibitem{Flughafenbild}
+URL \url{https://www.dedrone.com/industry/airports}, Abrufdatum: 7.9.2023
+\bibitem{YOLO}
+Girshick, Ross and Donahue, Jeff and Darrell, Trevor and Malik, Jitendra: \textit{You Only Look Once: Unified, Real-Time Object Detection} 
+ - URL \url{https://arxiv.org/abs/1506.02640}
+ Abrufdatum: 7.9.2023
+\bibitem{YOLOv5}
+ - URL \url{ https://docs.ultralytics.com/yolov5/tutorials/architecture_description/#1-model-structure}
+ Abrufdatum: 7.9.2023
  \bibitem{Metriken}
 URL \url{https://github.com/rafaelpadilla/Object-Detection-Metrics}
+Abrufdatum: 7.9.2023
  \bibitem{COCO-Metrik}
  URL \url{https://cocodataset.org/\#detection-eval}
+ Abrufdatum: 7.9.2023
 
 \end{thebibliography}
 
