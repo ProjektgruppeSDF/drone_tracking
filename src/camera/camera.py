@@ -14,14 +14,11 @@ class Camera():
 
     def __init__(self) -> None:
         self.video = cv2.VideoCapture(query_videostream_flipped_)
-        #self.video.set(cv2.CAP_PROP_OPENNI_MAX_BUFFER_SIZE, 3)
-        #self.video.set(cv2.CAP_PROP_BUFFERSIZE, 10)
-    
         self.camera_flip_monitorer = CameraFlipMonitorer(self._get_ptz()["pan"])
         self.y_direction = 1
         self.resolution = camera_resolution
         self.flip_faktor = 1
-        self.isZooming = 0
+        self.frames_until_next_zoom = 0
         
 
     def capture_image(self):
@@ -64,7 +61,7 @@ class Camera():
     """
     prop_factor_velocity_distance: - Proportionalitätsfaktor zwischen Abweichung Bildmitte von Ziel und des Geschwindigkeitsvektors für die Kamerasteuerung
                                    - wurde experimentell bestimmt/angepasst
-
+                                   
     acceptable_distance: - bei kleineren Abständen soll keine Kamerabwegung stattfinden, sonst wackelt die Kamera bei stehendem Ziel
 
     fov_ratio_factor: Geschwindigkeit der Kamerabewegung muss abhängig von Zoom sein, da mit steigendem Zoom das Sichtfeld kleiner wird
@@ -109,21 +106,26 @@ class Camera():
         requests.get(get_query_absolute_tilt(0))
         requests.get(get_query_zoom(1))
     
+    """
+    Es wurde beobachtet, dass es (aus unbekannten Gründen) einen negativen Effekt auf die Latenz hat, wenn man in jedem Frame einen zoom-query sendet.
+    Als Workaround wurde die Frequenz der zoom-querys mithilfe der frames_until_next_zoom-Variable reduziert
+    """
     def zoom(self,detection_results):
-        if self.isZooming == 0 :
-            laengeX = detection_results.x2 -detection_results.x1
-            laengeY = detection_results.y2 -detection_results.y1
-            diagonale = math.sqrt(laengeX * laengeX + laengeY * laengeY)
+        if self.frames_until_next_zoom == 0 :
+            length_x = detection_results.x2 -detection_results.x1
+            length_y = detection_results.y2 -detection_results.y1
+            diagonal = math.sqrt(length_x * length_x + length_y * length_y)
 
-            if diagonale <  get_desired_diagonal_minlength(self.resolution):
+            if diagonal <  get_desired_box_diagonal_minlength(self.resolution):
+                #reinzoomen
                 url = get_query_relative_zoom(50)
                 requests.get(url)
-            elif diagonale > get_desired_diagonal_maxlength(self.resolution) :
+            elif diagonal > get_desired_box_diagonal_maxlength(self.resolution) :
                 #rauszoomen
                 url = get_query_relative_zoom(-100)
                 requests.get(url)
-            self.isZooming = 2
+            self.frames_until_next_zoom = 2
         else:
-            self.isZooming = self.isZooming -1
+            self.frames_until_next_zoom = self.frames_until_next_zoom -1
 
         
