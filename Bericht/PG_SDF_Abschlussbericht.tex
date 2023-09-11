@@ -18,13 +18,13 @@
 \maketitle
 
 \begin{abstract}
-Es wurde ein Programm entwickelt, welches die automatische Verfolgung einer fliegenden Drohne durch eine PTZ-Netzwerkkamera-Kamera ausführt. Das Programm verfügt über Scan- und Tracking- Modi und prozessiert iterativ aufgenommene Frames in einem Ablauf aus Detektion mit YOlO, Tracking mit Kalman und Kamerasteuerung. Die Funktion des Drohnenverflogungsprogramms wurde in mehreren Testszenarien erfolgreich demonstriert.
+Es wurde ein Programm entwickelt, welches die automatische Verfolgung einer fliegenden Drohne durch eine PTZ-Netzwerkkamera-Kamera ausführt. Das Programm verfügt über Scan- und Tracking- Modi und prozessiert iterativ aufgenommene Frames in einem Ablauf aus Detektion mit YOLO, Tracking mit Kalman und Kamerasteuerung. Die Funktion des Drohnenverflogungsprogramms wurde in mehreren Testszenarien erfolgreich demonstriert.
 \end{abstract}
 
 
 \section{Motivation}
 Mit der steigenden Verbreitung von zivilen Drohnen steigen auch die Möglichkeiten der schädlichen Verwendung. Ein Beispiel für eine solche schädliche Verwendung ist der Gatwick Airport Vorfall 2018, bei dem die Sichtung von Drohnen auf dem Flughafengelände zu einer temporären Einstellung des Flugverkehrs führte. Zivile Drohnen bergen jedoch nicht nur ein wirtschaftliches Gefährdungspotential. Auch in der Kriegsführung können zivile Drohnenmodelle genutzt werden, zur Aufklärung oder zum Abwurf von Sprengladungen.\\\\
-Folglich gibt es ein hohes Interesse an wirksamen Systemen zur Erkennung von Drohnen, um ggf nach einer Erkennung Abwehrmaßnahmen einleiten zu können.\\\\
+Folglich gibt es ein hohes Interesse an wirksamen Systemen zur Erkennung von Drohnen, um gegebenenfalls nach einer Erkennung Abwehrmaßnahmen einleiten zu können.\\\\
 Eine mögliche Methode zur Erkennung von Drohnen ist die optische Detektion mitilfe von Kameras und echtzeitfähigen Deep-Learning-Detektionsmodellen. Im Gegensatz zur Radardetektion ist diese Detektionsmethode passiv, also ohne Emittierung von Strahlung, was insbesondere im militärischem Kontext von Vorteil ist.\\\\ Die Detektionsmodelle müssen schnell predizieren können, um eine Kamerasteuerung in Echzeit zu ermöglichen, und sie müssen zuverlässig und präzise Drohnen detektieren können. Diese Anforderungen sollen durch state-of-the-art-Detektionsmodelle wie YOlOv8 oder RT-DETR erfüllt werden. \\\\
 Da die Ergebnisse der Detektionsmodelle fehlerbehaftet sein können, ist für das Verfolgen der Drohnenflugbahn die Verwendung von Trackingalgorithmen von Vorteil. Ein besonders verbreiteter und fundamentaler Trackingalgorithmus ist der Kalman-Filter.
 
@@ -128,6 +128,10 @@ Girshick, Ross and Donahue, Jeff and Darrell, Trevor and Malik, Jitendra: \texti
 \bibitem{YOLOv5}
  - URL \url{ https://docs.ultralytics.com/yolov5/tutorials/architecture_description/#1-model-structure}
  Abrufdatum: 7.9.2023
+ \bibitem{RT-DETR}
+ Wenyu Lv, Yian Zhao, Shangliang Xu, Jinman Wei, Guanzhong Wang, Cheng Cui, Yuning Du, Qingqing Dang, Yi Liu \textit{DETRs Beat YOLOs on Real-time Object Detection} 
+  - URL \url{https://arxiv.org/abs/2304.08069}
+ Abrufdatum: 2.8.2023
  \bibitem{Metriken}
 URL \url{https://github.com/rafaelpadilla/Object-Detection-Metrics}
 Abrufdatum: 7.9.2023
