@@ -26,6 +26,7 @@ class ImageProcessor:
             tracking_result = self.tracker.track(detection_results, time)
             self.target_loss_monitorer.target_detection(time)
             self.camera.move_camera(tracking_result, ptz["zoom"])
+            self.camera.zoom(detection_results)
         else:
             displayImage(image, mode, self.target_loss_monitorer)
 

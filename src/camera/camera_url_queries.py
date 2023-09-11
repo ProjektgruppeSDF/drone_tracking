@@ -19,3 +19,7 @@ def get_query_absolute_tilt(x):
 def get_query_zoom(x):
     query = "http://{}/axis-cgi/com/ptz.cgi?zoom=".format(camera_ip)
     return query +str(x)
+
+def get_query_relative_zoom(x):
+    query = "http://{}/axis-cgi/com/ptz.cgi?rzoom=".format(camera_ip)
+    return query +str(x)
