@@ -68,12 +68,18 @@ Abbildung XXXX zeigt den Verlauf der primären Präzisionsmetrik mAP auf dem Val
 
 Auf dem Testdatensatz wurde mit YOLOv8 bzw. RT-DETR eine Präzision von XXXX bzw XXXX. erzielt. Dabei wurden die Gewichte der Modelle wie oben geschildert gewählt.
 
+\subsection{Tracking}
+
+XXXXHier sollte man sagen, dass wir den Standard-Kalman Filter benutzen und dafür alle Boxen bis auf jene mit der höchsten Wahrscheinlichkeit aussschließen. Vielleicht auch konkreter, wie die Matrizen im Kalman-Filter gewählt sind XXXXXXX
+
 \subsection{Programmaufbau}
 
 Der Quellcode des Programms kann öffentlich heruntergeladen werden XXXXX.\\\\
 
 Ein grober Überblick des Programmablaufs ist durch das Aktivitätsdiagramm in Abbildung XXXX dargestellt. Das Programm kann gedanklich in zwei Modi unterteilt werden; einen Scanmodus und einen Trackingmodus.\\\\ Das Programm startet im Scanmodus. In diesem bewegt dreht sich die Kamera bei minimaler Zoomstufe horizontal um sich selber, mit alternierender Aufwärts- und Abwärtsbewegung. Diese Bewegung dient dazu, regelmäßig unterschiedliche Bereiche des Kamersichtfelds zu erfassen. Im Scanmodus wird iterativ ein Kamerabild aufgenommen und für die Prediktion an das Detektionsmodell YOLO (bzw. RT-DETR, je nach Konfiguration) übergeben. Erst wenn in einem Bild eine Drohnendetektion auftritt, wird der Scanmodus verlassen und in den Trackingmodus übergegangen. Dabei wird der Kalman-Filter des Trackingmoduls (re)-initialisiert.\\\\
-Auch im Trackingmodus wird iterativ ein Bild aufgenommen und prediziert. Die Detektionsergebnisse werden dann jedoch vom Kalman-Filter verwendet, um die tatsächliche Position der Drohne (in Bildkoordinaten ) abzuschätzen. Anschließend werden die Tracking-Ergebnisse verwendet, um die Drohne zu steuern. Die Kameraausrichtung wird verändert, sodass sich ihr Bildmittelpunkt in Richtung des Trackingergebnisses bewegt. Als zusätzliches Feature wurde implementiert, dass die Kamera abhängig von der Boxgröße der Detektion ihre Zoomstufe vergrößert oder verkleinert. Der Trackingmodus wird verlassen, wenn das Ziel verloren ist. Das Ziel gilt als verloren, wenn in einem konfiguierbaren Zeitraum keine Deektion mehr erfolgte.
+Auch im Trackingmodus wird iterativ ein Bild aufgenommen und auf diesem mit dem Detektionsmodell prediziert. Die Detektionsergebnisse werden dann jedoch vom Kalman-Filter verwendet, um die tatsächliche Position der Drohne (in Bildkoordinaten ) abzuschätzen. Anschließend werden die Tracking-Ergebnisse verwendet, um die Drohne zu steuern. Die Kameraausrichtung wird verändert, sodass sich ihr Bildmittelpunkt in Richtung des Trackingergebnisses bewegt. Als zusätzliches Feature wurde implementiert, dass die Kamera abhängig von der Boxgröße der Detektion ihre Zoomstufe vergrößert oder verkleinert. Der Trackingmodus wird verlassen, wenn das Ziel verloren ist. Das Ziel gilt als verloren, wenn in einem konfiguierbaren Zeitraum keine Detektion mehr erfolgte.\\\\
+
+Ungewöhnlich mag erscheinen, dass im Fall einer Nicht-Detektion ohne Zielverlust auf das Verwenden des Trackingalgorithmus und anschließendes Adjustieren der Kamerabewegung verzichtet wird. Der Grund dafür ist, dass die Kamerasteuerung über einen continous-move-Befehl erfolgt (siehe Kapitel Kamerasteuerung). Im Tracking-Modus bewegt sich die Kamera bei Nicht-Detektion ohne Zielverlust also weiterhin in die gleiche Richtung wie in der letzten Iteration mit Detektion. Letztendlich stellt dies also keinen Unterschied dar zur alternativen Vorgehensweise, bei Nichtdetektion das Ergebnis der Kalman-Prediktion für die Kamerasteuerung zu verwenden.
 
 
 \begin{figure}
