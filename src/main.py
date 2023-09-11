@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
         # Scan Modus
         while True:
-            detection_exists, image, time, ptz = image_processor.process_frame("Scan")
+            detection_exists, time, ptz = image_processor.process_frame("Scan")
             if not detection_exists:
                 camera.scan(ptz["tilt"])           
             else:
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
         # Tracking Modus
         while True:
-            detection_exists, image, time, ptz = image_processor.process_frame("Tracking")
+            detection_exists, time, ptz = image_processor.process_frame("Tracking")
             if not detection_exists:
                 target_loss_monitorer.no_target_detection(time)
                 if target_loss_monitorer.is_target_lost:
