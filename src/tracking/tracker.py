@@ -22,7 +22,7 @@ class Tracker:
     #def __init__(self) -> None:
         #self.datei = open('position.txt','a')
 
-    def kalman_filter(self,measurement,tdems):
+    def kalman_filter(self,measurement,confidence, tdems):
         measurement_funktion=np.matrix([[1,0,0,0],
                        [0,1,0,0]])
         dynamic = np.matrix([[1,0,tdems,0],
@@ -35,15 +35,12 @@ class Tracker:
         predicted_state_covariance = dynamic @ self.state_covariance @ np.transpose(dynamic) + self.process_noise
         
         # Filterung
-        sk = measurement_funktion @ predicted_state_covariance @ np.transpose(measurement_funktion) + self.measurement_noise
+        sk = measurement_funktion @ predicted_state_covariance @ np.transpose(measurement_funktion) + self.measurement_noise/confidence
         wk = predicted_state_covariance @ np.transpose(measurement_funktion) @ np.linalg.inv(sk)
         vk = measurement - measurement_funktion @ predicted_state
         self.state = predicted_state + wk @ vk
         self.state_covariance = predicted_state_covariance - wk @ sk @ np.transpose(wk)
 
-
-
-    # TODO: wenn es keine Detektion gibt, sollte der prädizierte Wert zurückgegeben werden und nicht None
     
     def track(self, detection_result,dt):
 
@@ -52,7 +49,7 @@ class Tracker:
         detectY = (detection_result.y2 + detection_result.y1) / 2
         measurement = np.array([detectX,detectY])
         if(np.array_equal(self.state, self.init_state)):
-                #initalisierung
+            # Initalisierung
             self.state[0] = measurement[0]
             self.state[1]= measurement[1]
             self.alt = self.state
@@ -60,7 +57,7 @@ class Tracker:
         else:
             tde = self.pdt - dt
             tdems = int(tde/timedelta(milliseconds=1))
-            self.kalman_filter(measurement,tdems)
+            self.kalman_filter(measurement,detection_result.confidence, tdems)
 
             self.state[2] = (self.state[0]-self.alt[0])/ tdems
             self.state[3] = (self.state[1]-self.alt[1])/ tdems

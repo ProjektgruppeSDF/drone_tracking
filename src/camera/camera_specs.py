@@ -27,6 +27,6 @@ def get_fov_horizontal(zoom):
 def get_fov_ratio_factor(zoom):
     fov = get_fov_horizontal(zoom)
     fov_at_no_zoom = 61.816
-    return fov/fov_at_no_zoom
+    return (fov/fov_at_no_zoom)
 
 

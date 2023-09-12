@@ -95,9 +95,9 @@ class Camera():
             self.y_direction = -1
         elif(tilt>-10):
             self.y_direction = 1
-
-        url = get_query_continous_move(34, self.y_direction*-5)
+        url = get_query_continous_move(17, self.y_direction*-5)
         requests.get(url)
+
 
     def move_to_default_position():
         print("move_to_default_position")
