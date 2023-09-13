@@ -8,5 +8,5 @@ captured by us. The images and annotations can be downloaded in the link below. 
 https://www.dropbox.com/sh/4uc76f7wkfismth/AAAF3n8RATF9KYvuUhkS_cufa?dl=0
 
 
-This program was created as part of a university project at the University of Bonn. Translate german comments to english (with ChatGPT) if needed. A more detailed description is found in the project report in the "Bericht" folder (in german). Please view the activity diagram in the report to get a basic understanding of the program flow.
+This program was created as part of a university project at the University of Bonn. Translate german comments to english (with ChatGPT) if needed. A more detailed description is found in the project report "Projektbericht" folder (in german). Please view the activity diagram in the report to get a basic understanding of the program flow.
 
